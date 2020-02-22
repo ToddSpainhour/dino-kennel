@@ -1,4 +1,3 @@
-console.log("Your JS is connected!")
 
 const dinos = [{
     id: 'dino1',
@@ -48,36 +47,35 @@ const viewSingleDino = (e) => {
     const selectedDino = dinos.find((x) => dinoId ===x.id);
     console.log('selectedDino', selectedDino);
     let domString = '';
-    domString +=     `<button id="close-single-view" class="btn btn-outline-dark single-dino"><i class="fas fa-times-circle"></i></button>`
-    
-   domString += `<div class="container">`
-   domString +=     `<div class="row">`
+            domString +=     `<button id="close-single-view" class="btn btn-outline-dark single-dino"><i class="fas fa-times-circle"></i></button>`
+                
+            domString += `<div class="container">`
+            domString +=     `<div class="row">`
 
-   domString +=         `<div class="col-6">`
-   domString +=             `<img src="${selectedDino.imageUrl}" class="img-fluid" alt="">`
-   domString +=         `</div>`
+            domString +=         `<div class="col-6">`
+            domString +=             `<img src="${selectedDino.imageUrl}" class="img-fluid" alt="">`
+            domString +=         `</div>`
 
-   domString +=         `<div class="col-6">`
-   domString +=             `<h2>${selectedDino.name} </h2>`
-   domString +=             `<h3>${selectedDino.type} </h3>`
-   domString +=             `<p>${selectedDino.age} </p>`
-   domString +=             `<p>${selectedDino.owner} </p>`
-   domString +=             `<p>${selectedDino.health} </p>`
-   domString +=         `</div>`
+            domString +=         `<div class="col-6">`
+            domString +=             `<h2>${selectedDino.name} </h2>`
+            domString +=             `<h3>${selectedDino.type} </h3>`
+            domString +=             `<p>${selectedDino.age} </p>`
+            domString +=             `<p>${selectedDino.owner} </p>`
+            domString +=             `<p>${selectedDino.health} </p>`
+            domString +=         `</div>`
 
-   domString +=     `</div>`
-   domString += `</div>`
+            domString +=     `</div>`
+            domString += `</div>`
     
     printToDom('kennel', '');
     printToDom('single-view', domString);
     document.getElementById('close-single-view').addEventListener('click', closeSingleViewEvent);
 }
 
-
 const singleDinoAddEvents = () => {
     const dinoViewButtons = document.getElementsByClassName('single-dino');
     for(let i = 0; i < dinoViewButtons.length; i++){
-    dinoViewButtons[i].addEventListener('click', viewSingleDino)
+        dinoViewButtons[i].addEventListener('click', viewSingleDino)
     }
 }
 
@@ -89,18 +87,35 @@ const dinoHealth = (e) =>{
     }
     printDinos(dinos)
 
-    console.log("went over image")
 }
-
-
 
 const petEvents = () => {
     const dinoPetButtons = document.getElementsByClassName('dino-photo');
     for(let i = 0; i < dinoPetButtons.length; i++){
-dinoPetButtons[i].addEventListener('mouseleave', dinoHealth)
+        dinoPetButtons[i].addEventListener('mouseleave', dinoHealth)
     }
 }
 
+const feedMe = (e) => {
+    const dinoId = e.target.closest('.card').id;
+    const dinoPosition = dinos.findIndex((p) => p.id ===dinoId);
+    
+    if(dinos[dinoPosition].health < 90) {
+        dinos[dinoPosition].health += 10;
+        printDinos(dinos)
+    } else if (dinos[dinoPosition].health > 89 && dinos[dinoPosition].health < 100) {
+        dinos[dinoPosition].health = 100;
+        printDinos(dinos);
+    };
+        // printDinos(dinos))
+}
+
+const feedEvents = () => {
+    const dinoFeedButtons = document.getElementsByClassName('feed-button');
+    for(let i = 0; i < dinoFeedButtons.length; i++){
+        dinoFeedButtons[i].addEventListener('click', feedMe)
+    }
+}
 
 const deleteDinoEvent = (e) => {
     const dinoId = e.target.closest('card'.id);
@@ -110,16 +125,12 @@ const deleteDinoEvent = (e) => {
     console.log("trash can!");
 }
 
-
-
 const deleteEvents = () => {
     const dinoDeleteButtons = document.getElementsByClassName('delete-dino');
     for(let i = 0; i < dinoDeleteButtons.length; i++){
 dinoDeleteButtons[i].addEventListener('click', deleteDinoEvent)
     }
 }
-
-
 
 const printDinos = (dinoArray) => {
     let domString = '';
@@ -131,6 +142,7 @@ const printDinos = (dinoArray) => {
         domString +=     `<div class="card-body">`
         domString +=     `<h5 class="card-title">Name: ${dinoArray[i].name}</h5>`
         domString +=     `<p class="card-text">Health: ${dinoArray[i].health}</p>`
+        domString +=     `<button class="btn btn-outline-dark feed-button"><i class="fas fa-utensils"></i></button>`
         domString +=     `<button class="btn btn-outline-dark single-dino"><i class="fas fa-eye"></i></button>`
         domString +=     `<button class="btn btn-outline-danger delete-dino"><i class="fas fa-trash-alt"></i></button>`
         domString +=     `</div>`
@@ -141,11 +153,8 @@ const printDinos = (dinoArray) => {
     singleDinoAddEvents();
     petEvents();
     deleteEvents();
+    feedEvents();
 }
-
-// const formCollapse = () => {
-//     document.getElementById('collapseOne').classList.remove('show');
-// }
 
 const newDino = (e) => {
     e.preventDefault();
@@ -165,9 +174,6 @@ const newDino = (e) => {
     printDinos(dinos);
     console.log('hi from new dino, brandNewDino');
 };
-
-
-
 
 const init = () => {
     document.getElementById('submit-new-dino').addEventListener('click', newDino);
