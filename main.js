@@ -17,7 +17,7 @@ const dinos = [{
     age: 10,
     owner: 'Zoe',
     adventures: [],
-    health: 100,
+    health: 1,
     imageUrl: 'https://images-na.ssl-images-amazon.com/images/I/61fC04pumjL._AC_SL1001_.jpg'
   },
   {
@@ -27,7 +27,7 @@ const dinos = [{
     age: 50,
     owner: 'Luke',
     adventures: [],
-    health: 100,
+    health: 45,
     imageUrl: 'https://images-na.ssl-images-amazon.com/images/I/61fC04pumjL._AC_SL1001_.jpg'
   }];
 
@@ -77,9 +77,28 @@ const viewSingleDino = (e) => {
 const singleDinoAddEvents = () => {
     const dinoViewButtons = document.getElementsByClassName('single-dino');
     for(let i = 0; i < dinoViewButtons.length; i++){
-dinoViewButtons[i].addEventListener('click', viewSingleDino)
+    dinoViewButtons[i].addEventListener('click', viewSingleDino)
     }
 }
+
+const dinoHealth = (e) =>{
+    const dinoId = e.target.closest('.card').id;
+    const dinoPosition = dinos.findIndex((p) => p.id ===dinoId);
+    dinos[dinoPosition].health += 1;
+    printDinos(dinos)
+
+    console.log("went over image")
+}
+
+
+
+const petEvents = () => {
+    const dinoPetButtons = document.getElementsByClassName('dino-photo');
+    for(let i = 0; i < dinoPetButtons.length; i++){
+dinoPetButtons[i].addEventListener('mouseleave', dinoHealth)
+    }
+}
+
 
 const printDinos = (dinoArray) => {
     let domString = '';
@@ -87,10 +106,10 @@ const printDinos = (dinoArray) => {
 
         domString +=     `<div class="col-4">`
         domString +=     `<div id="${dinoArray[i].id}" class="card">`
-        domString +=     `<img src="${dinoArray[i].imageUrl}" class="card-img-top" alt="...">`
+        domString +=     `<img src="${dinoArray[i].imageUrl}" class="card-img-top dino-photo" alt="...">`
         domString +=     `<div class="card-body">`
-        domString +=     `<h5 class="card-title">${dinoArray[i].name}</h5>`
-        domString +=     `<p class="card-text">${dinoArray[i].health}</p>`
+        domString +=     `<h5 class="card-title">Name: ${dinoArray[i].name}</h5>`
+        domString +=     `<p class="card-text">Health: ${dinoArray[i].health}</p>`
         domString +=     `<button class="btn btn-outline-dark single-dino"><i class="fas fa-eye"></i></button>`
         domString +=     `</div>`
         domString +=     `</div>`
@@ -98,6 +117,7 @@ const printDinos = (dinoArray) => {
     }
     printToDom('kennel', domString)
     singleDinoAddEvents();
+    petEvents();
 }
 
 // const formCollapse = () => {
