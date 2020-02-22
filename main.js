@@ -35,7 +35,6 @@ const dinos = [{
 const printToDom = (divId, textToPrint) => {
     const selectedDiv = document.getElementById(divId);
     selectedDiv.innerHTML = textToPrint;
-    console.log(divId, textToPrint)
 };
 
 const closeSingleViewEvent = () => {
@@ -43,12 +42,35 @@ const closeSingleViewEvent = () => {
     printDinos(dinos)
 }
 
-const viewSingleDino = () => {
-    let domString = ''
+const viewSingleDino = (e) => {
+    
+    const dinoId = e.target.closest('.card').id;
+    const selectedDino = dinos.find((x) => dinoId ===x.id);
+    console.log('selectedDino', selectedDino);
+    let domString = '';
     domString +=     `<button id="close-single-view" class="btn btn-outline-dark single-dino"><i class="fas fa-times-circle"></i></button>`
+    
+   domString += `<div class="container">`
+   domString +=     `<div class="row">`
+
+   domString +=         `<div class="col-6">`
+   domString +=             `<img src="${selectedDino.imageUrl}" class="img-fluid" alt="">`
+   domString +=         `</div>`
+
+   domString +=         `<div class="col-6">`
+   domString +=             `<h2>${selectedDino.name} </h2>`
+   domString +=             `<h3>${selectedDino.type} </h3>`
+   domString +=             `<p>${selectedDino.age} </p>`
+   domString +=             `<p>${selectedDino.owner} </p>`
+   domString +=             `<p>${selectedDino.health} </p>`
+   domString +=         `</div>`
+
+   domString +=     `</div>`
+   domString += `</div>`
+    
     printToDom('kennel', '');
     printToDom('single-view', domString);
-    document.getElementById('close-single-view').addEventListener('click', closeSingleViewEvent)
+    document.getElementById('close-single-view').addEventListener('click', closeSingleViewEvent);
 }
 
 
@@ -64,7 +86,7 @@ const printDinos = (dinoArray) => {
     for (let i = 0; i < dinoArray.length; i++){
 
         domString +=     `<div class="col-4">`
-        domString +=     `<div class="card">`
+        domString +=     `<div id="${dinoArray[i].id}" class="card">`
         domString +=     `<img src="${dinoArray[i].imageUrl}" class="card-img-top" alt="...">`
         domString +=     `<div class="card-body">`
         domString +=     `<h5 class="card-title">${dinoArray[i].name}</h5>`
@@ -92,7 +114,7 @@ const newDino = (e) => {
         owner: document.getElementById('dino-owner').value,
         adventures: [],
         health: 100,
-        image: document.getElementById('dino-image').value,
+        imageUrl: document.getElementById('dino-image').value,
     }
     dinos.push(brandNewDino);
     document.getElementById('new-dino-form').reset();
